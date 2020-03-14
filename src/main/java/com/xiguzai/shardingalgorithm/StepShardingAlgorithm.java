@@ -8,47 +8,48 @@ import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 
 import java.util.*;
 
-public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Integer> implements PreciseShardingAlgorithm<Integer>, RangeShardingAlgorithm<Integer> {
+public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Long> implements PreciseShardingAlgorithm<Long>, RangeShardingAlgorithm<Long> {
 
-    public StepShardingAlgorithm(int step) {
+    public StepShardingAlgorithm(long step) {
         this.step = step;
     }
 
-    public StepShardingAlgorithm(int step, Integer min, Integer max) {
+    public StepShardingAlgorithm(long step, Long min, Long max) {
         this.min = min;
         this.max = max;
         this.step = step;
     }
 
-    private static final int defaultMin = 0;
-    private static final int defaultMax = Integer.MAX_VALUE;
+    private static final long defaultMin = 0;
+    private static final long defaultMax = Integer.MAX_VALUE;
 
-    private Integer min;
-    private Integer max;
+    private Long min;
+    private Long max;
 
-    private int step;
+    private long step;
 
     @Override
-    Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Integer value) {
+    Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Long value) {
         StringBuilder sb = new StringBuilder();
-        sb.append(logicTableName).append(SPLIT);
+        sb.append(logicTableName).append(split);
         String suffix = suffix(value);
         sb.append(suffix);
-        return Optional.of(sb.toString());
+        String routeTableName = sb.toString();
+        return availableTargetNames.contains(routeTableName) ? Optional.of(routeTableName) : Optional.empty();
     }
 
     @Override
-    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Integer> shardingValue) {
+    public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Long> shardingValue) {
         Optional<String> routeTableName = getRouteTableName(availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), shardingValue.getValue());
         return routeTableName.get();
     }
 
     @Override
-    public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<Integer> shardingValue) {
-        int lower, upper;
+    public Collection<String> doSharding(Collection<String> availableTargetNames, RangeShardingValue<Long> shardingValue) {
+        long lower, upper;
         String logicTableName = shardingValue.getLogicTableName();
         String columnName = shardingValue.getColumnName();
-        Range<Integer> valueRange = shardingValue.getValueRange();
+        Range<Long> valueRange = shardingValue.getValueRange();
         try {
             lower = valueRange.lowerEndpoint();
         } catch (IllegalStateException e) {
@@ -60,13 +61,13 @@ public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Integer> im
             upper = getMax();
         }
         Set<String> targetNames = new HashSet<>();
-        int diff = upper - lower;
+        long diff = upper - lower;
         if (diff < 0) {
             throw new IllegalArgumentException();
         } else if (diff == 0) {
             addTargetNames(targetNames, availableTargetNames, logicTableName, columnName, lower);
         } else {
-            int low = lower;
+            long low = lower;
             while (upper - low >= 0) {
                 addTargetNames(targetNames, availableTargetNames, logicTableName, columnName, low);
                 low += step;
@@ -76,27 +77,24 @@ public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Integer> im
         return targetNames;
     }
 
-    private String suffix(int value) {
-        int i = (value + step - 1) / step;
-        if (i == 0) {
-            i = 1;
-        }
+    private String suffix(long value) {
+        long i = value / (step + 1) + 1;
         return String.valueOf(i);
     }
 
-    public Integer getMin() {
+    public Long getMin() {
         return Objects.isNull(min) ? defaultMin : min;
     }
 
-    public void setMin(Integer min) {
+    public void setMin(Long min) {
         this.min = min;
     }
 
-    public Integer getMax() {
+    public Long getMax() {
         return Objects.isNull(max) ? defaultMax : max;
     }
 
-    public void setMax(Integer max) {
+    public void setMax(Long max) {
         this.max = max;
     }
 }

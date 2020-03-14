@@ -8,10 +8,7 @@ public class SeasonShardingAlgorithm extends MonthShardingAlgorithm {
 
     @Override
     protected Optional<String> getRouteTableNo(int month) {
-        int i = (month + MONTH_STEP - 1) / MONTH_STEP;
-        if (i == 0) {
-            i = 1;
-        }
+        int i = month / (MONTH_STEP + 1) + 1;
         return Optional.of(String.valueOf(i));
     }
 

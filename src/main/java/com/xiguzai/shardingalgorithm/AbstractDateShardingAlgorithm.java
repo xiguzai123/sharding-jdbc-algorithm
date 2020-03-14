@@ -12,14 +12,14 @@ public abstract class AbstractDateShardingAlgorithm extends AbstractShardingAlgo
     @Override
     protected final Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Date value) {
         StringBuilder sb = new StringBuilder();
-        sb.append(logicTableName).append(SPLIT);
+        sb.append(logicTableName).append(split);
 
         LocalDate localDate = LocalDateTime.ofInstant(value.toInstant(), ZoneId.systemDefault()).toLocalDate();
         int year = localDate.getYear();
         sb.append(year);
         int month = localDate.getMonthValue();
         Optional<String> routeTableNo = getRouteTableNo(month);
-        routeTableNo.ifPresent(s -> sb.append(SPLIT).append(s));
+        routeTableNo.ifPresent(s -> sb.append(split).append(s));
         String targetName = sb.toString();
 
         return availableTargetNames.contains(targetName) ? Optional.of(targetName) : Optional.empty();

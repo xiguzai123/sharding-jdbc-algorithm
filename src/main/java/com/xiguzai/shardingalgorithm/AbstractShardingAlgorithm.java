@@ -1,6 +1,5 @@
 package com.xiguzai.shardingalgorithm;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -10,9 +9,9 @@ import java.util.Set;
  *
  * @author xiguzai
  */
-public abstract class AbstractShardingAlgorithm<T extends Serializable> {
+public abstract class AbstractShardingAlgorithm<T extends Comparable<?>> {
 
-    protected static final String SPLIT = "_";
+    protected final String split = "_";
 
     /**
      * getRouteTableName
