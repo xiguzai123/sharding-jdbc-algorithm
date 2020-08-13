@@ -1,4 +1,4 @@
-package com.xiguzai.shardingalgorithm;
+package com.xiguzai.shardingsphere.jdbc.algorithm;
 
 import java.util.Optional;
 

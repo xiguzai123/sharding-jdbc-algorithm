@@ -1,4 +1,4 @@
-package com.xiguzai.shardingalgorithm;
+package com.xiguzai.shardingsphere.jdbc.algorithm;
 
 import com.google.common.collect.Range;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;

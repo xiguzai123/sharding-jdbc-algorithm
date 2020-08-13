@@ -1,4 +1,4 @@
-package com.xiguzai.shardingalgorithm;
+package com.xiguzai.shardingsphere.jdbc.algorithm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

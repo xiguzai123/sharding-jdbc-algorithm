@@ -1,10 +1,10 @@
-package com.xiguzai.shardingalgorithm;
+package com.xiguzai.shardingsphere.jdbc.algorithm;
 
 import java.util.Optional;
 
-public class SeasonShardingAlgorithm extends MonthShardingAlgorithm {
+public class HalfYearShardingAlgorithm extends MonthShardingAlgorithm {
 
-    private static final int MONTH_STEP = 3;
+    private static final int MONTH_STEP = 6;
 
     @Override
     protected Optional<String> getRouteTableNo(int month) {

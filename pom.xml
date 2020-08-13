@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.xiguzai.shardingalgorithm</groupId>
-    <artifactId>sharding-algorithm</artifactId>
+    <groupId>com.xiguzai.shardingsphere</groupId>
+    <artifactId>sharding-jdbc-algorithm</artifactId>
     <version>0.0.1</version>
 
     <properties>
@@ -14,7 +14,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sharding.vresion>4.0.0</sharding.vresion>
+        <shardingsphere.vresion>4.1.1</shardingsphere.vresion>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-core</artifactId>
-            <version>${sharding.vresion}</version>
+            <version>${shardingsphere.vresion}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
