@@ -1,7 +1,7 @@
-# sharding-algorithm
-sharding-jdbc分片算法合集
+# sharding-jdbc-algorithm
 
-### 具体实现算法
+### sharding-jdbc分片算法实现合集
+
 - 按年分表算法 -> YearShardingAlgorithm
 - 半年分表算法 -> HalfYearShardingAlgorithm
 - 季度分表算法 -> SeasonShardingAlgorithm
