@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <shardingsphere.vresion>4.1.1</shardingsphere.vresion>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencies>
