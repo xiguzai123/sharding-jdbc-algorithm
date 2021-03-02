@@ -23,13 +23,13 @@ public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Long> imple
         this.step = step;
     }
 
-    private static final long defaultMin = 0;
+    private static final long defaultMin = 1;
     private static final long defaultMax = Integer.MAX_VALUE;
 
     private Long min;
     private Long max;
 
-    private long step;
+    private final long step;
 
     @Override
     protected String getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Long value) {
@@ -67,14 +67,18 @@ public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Long> imple
         if (diff < 0) {
             throw new IllegalArgumentException();
         } else if (diff == 0) {
-            addTargetNames(targetNames, availableTargetNames, logicTableName, columnName, lower);
+            addTargetName(targetNames, availableTargetNames, logicTableName, columnName, lower);
         } else {
             long low = lower;
             while (upper - low >= 0) {
-                addTargetNames(targetNames, availableTargetNames, logicTableName, columnName, low);
+                String addTargetName = addTargetName(targetNames, availableTargetNames, logicTableName, columnName, low);
+                if (Objects.isNull(addTargetName)) {
+                    addTargetName(targetNames, availableTargetNames, logicTableName, columnName, upper);
+                    return targetNames;
+                }
                 low += step;
             }
-            addTargetNames(targetNames, availableTargetNames, logicTableName, columnName, upper);
+            addTargetName(targetNames, availableTargetNames, logicTableName, columnName, upper);
         }
         return targetNames;
     }

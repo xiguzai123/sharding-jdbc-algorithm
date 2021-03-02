@@ -24,10 +24,11 @@ public abstract class AbstractShardingAlgorithm<T extends Comparable<?>> {
      */
     protected abstract String getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, T value);
 
-    protected void addTargetNames(Set<String> targetNames, Collection<String> availableTargetNames, String logicTableName, String columnName, T value) {
+    protected String addTargetName(Set<String> targetNames, Collection<String> availableTargetNames, String logicTableName, String columnName, T value) {
         String routeTableName = getRouteTableName(availableTargetNames, logicTableName, columnName, value);
         if (Objects.nonNull(routeTableName) && !routeTableName.isEmpty()) {
             targetNames.add(routeTableName);
         }
+        return routeTableName;
     }
 }

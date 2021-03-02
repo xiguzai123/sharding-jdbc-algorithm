@@ -49,18 +49,18 @@ public class MonthShardingAlgorithm extends AbstractDateShardingAlgorithm implem
         if (diff < 0) {
             throw new IllegalArgumentException();
         } else if (diff == 0) {
-            addTargetNames(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), lowerDate);
+            addTargetName(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), lowerDate);
         } else {
             LocalDate lowLocalDate = lowerLocalDate;
             while (upperLocalDate.compareTo(lowLocalDate) >= 0) {
                 Instant lowInstant = lowLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
                 Date lowDate = Date.from(lowInstant);
-                addTargetNames(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), lowDate);
+                addTargetName(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), lowDate);
                 lowLocalDate = lowLocalDate.plusMonths(getMonthStep());
             }
             Instant upInstant = upperLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
             Date upDate = Date.from(upInstant);
-            addTargetNames(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), upDate);
+            addTargetName(targetNames, availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), upDate);
         }
 
         return targetNames;
