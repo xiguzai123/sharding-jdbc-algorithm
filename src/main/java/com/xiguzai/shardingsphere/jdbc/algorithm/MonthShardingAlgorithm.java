@@ -24,8 +24,7 @@ public class MonthShardingAlgorithm extends AbstractDateShardingAlgorithm implem
 
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Date> shardingValue) {
-        Optional<String> routeTableName = getRouteTableName(availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), shardingValue.getValue());
-        return routeTableName.get();
+        return getRouteTableName(availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), shardingValue.getValue());
     }
 
     @Override
@@ -68,8 +67,8 @@ public class MonthShardingAlgorithm extends AbstractDateShardingAlgorithm implem
     }
 
     @Override
-    protected Optional<String> getRouteTableNo(int month) {
-        return Optional.of(String.valueOf(month));
+    protected String getRouteTableNo(int month) {
+        return String.valueOf(month);
     }
 
     public Date getMinDate() {

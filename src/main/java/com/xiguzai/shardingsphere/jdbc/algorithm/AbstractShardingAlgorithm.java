@@ -1,7 +1,7 @@
 package com.xiguzai.shardingsphere.jdbc.algorithm;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public abstract class AbstractShardingAlgorithm<T extends Comparable<?>> {
 
-    protected final String split = "_";
+    protected static final String STRING = "_";
 
     /**
      * getRouteTableName
@@ -22,10 +22,12 @@ public abstract class AbstractShardingAlgorithm<T extends Comparable<?>> {
      * @param value
      * @return
      */
-    abstract Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, T value);
+    protected abstract String getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, T value);
 
     protected void addTargetNames(Set<String> targetNames, Collection<String> availableTargetNames, String logicTableName, String columnName, T value) {
-        Optional<String> routeTableName = getRouteTableName(availableTargetNames, logicTableName, columnName, value);
-        routeTableName.ifPresent(targetNames::add);
+        String routeTableName = getRouteTableName(availableTargetNames, logicTableName, columnName, value);
+        if (Objects.nonNull(routeTableName) && !routeTableName.isEmpty()) {
+            targetNames.add(routeTableName);
+        }
     }
 }

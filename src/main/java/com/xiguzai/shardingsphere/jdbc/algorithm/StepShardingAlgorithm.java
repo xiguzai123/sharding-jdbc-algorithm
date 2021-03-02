@@ -6,7 +6,10 @@ import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Long> implements PreciseShardingAlgorithm<Long>, RangeShardingAlgorithm<Long> {
 
@@ -29,19 +32,18 @@ public class StepShardingAlgorithm extends AbstractShardingAlgorithm<Long> imple
     private long step;
 
     @Override
-    Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Long value) {
+    protected String getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Long value) {
         StringBuilder sb = new StringBuilder();
-        sb.append(logicTableName).append(split);
+        sb.append(logicTableName).append(STRING);
         String suffix = suffix(value);
         sb.append(suffix);
         String routeTableName = sb.toString();
-        return availableTargetNames.contains(routeTableName) ? Optional.of(routeTableName) : Optional.empty();
+        return availableTargetNames.contains(routeTableName) ? routeTableName : null;
     }
 
     @Override
     public String doSharding(Collection<String> availableTargetNames, PreciseShardingValue<Long> shardingValue) {
-        Optional<String> routeTableName = getRouteTableName(availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), shardingValue.getValue());
-        return routeTableName.get();
+        return getRouteTableName(availableTargetNames, shardingValue.getLogicTableName(), shardingValue.getColumnName(), shardingValue.getValue());
     }
 
     @Override

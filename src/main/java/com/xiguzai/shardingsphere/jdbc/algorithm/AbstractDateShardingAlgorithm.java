@@ -5,25 +5,27 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
+import java.util.Objects;
 
 public abstract class AbstractDateShardingAlgorithm extends AbstractShardingAlgorithm<Date> {
 
     @Override
-    protected final Optional<String> getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Date value) {
+    protected final String getRouteTableName(Collection<String> availableTargetNames, String logicTableName, String columnName, Date value) {
         StringBuilder sb = new StringBuilder();
-        sb.append(logicTableName).append(split);
+        sb.append(logicTableName).append(STRING);
 
         LocalDate localDate = LocalDateTime.ofInstant(value.toInstant(), ZoneId.systemDefault()).toLocalDate();
         int year = localDate.getYear();
         sb.append(year);
         int month = localDate.getMonthValue();
-        Optional<String> routeTableNo = getRouteTableNo(month);
-        routeTableNo.ifPresent(s -> sb.append(split).append(s));
+        String routeTableNo = getRouteTableNo(month);
+        if (Objects.nonNull(routeTableNo) && !routeTableNo.isEmpty()) {
+            sb.append(STRING).append(routeTableNo);
+        }
         String targetName = sb.toString();
 
-        return availableTargetNames.contains(targetName) ? Optional.of(targetName) : Optional.empty();
+        return availableTargetNames.contains(targetName) ? targetName : null;
     }
 
-    protected abstract Optional<String> getRouteTableNo(int month);
+    protected abstract String getRouteTableNo(int month);
 }
